@@ -72,36 +72,49 @@ app.post("/registration", async (req, res) => {
 
 // User Login Route (Sign-in)
 app.post("/login", async (req, res) => {
-  console.log("Received login request:", req.body); // Debugging line
+  console.log("Received login request:", req.body);
 
   const { email, password } = req.body;
 
   // Validate input fields
   if (!email || !password) {
-    console.log("Missing email or password!"); // Log missing fields
-    return res
-      .status(400)
-      .json({ message: "Please provide both email and password." });
+    console.log("Missing email or password!");
+    return res.status(400).json({ message: "Please provide both email and password." });
   }
 
   try {
-    // Query to check if user exists
-    const query = `SELECT * FROM doc_auth WHERE email = ? AND password = ?`;
+    // Step 1: Check if the email exists
+    const query = `SELECT * FROM doc_auth WHERE email = ?`;
 
-    db.query(query, [email, password], (err, results) => {
+    db.query(query, [email], (err, results) => {
       if (err) {
         console.error("Database Error:", err);
         return res.status(500).json({ message: "Database error", error: err });
       }
 
       if (results.length === 0) {
+        console.log("Invalid login attempt: Email not found");
         return res.status(401).json({ message: "Invalid email or password." });
       }
 
-      // Successful login
-      console.log("User authenticated:", results[0]);
-      console.log("login successful");
-      res.redirect("/dashboard.html"); // Redirecting to dashboard on success
+      // Step 2: User exists, now check password
+      const user = results[0]; // Get user details from DB
+      const storedPassword = user.password; // Fetch stored password
+      const userName = user.name; // Fetch user name
+
+      if (storedPassword !== password) {
+        console.log("Invalid login attempt: Incorrect password");
+        return res.status(401).json({ message: "Invalid email or password." });
+      }
+
+      // Step 3: Successful login
+      console.log("User Logged In:");
+      console.log("Name:", userName);
+      console.log("Email:", email);
+      console.log("Login successful");
+
+      // Step 4: Send response with user name for frontend storage
+      res.redirect('/dashboard.html'); // Redirects immediately
     });
   } catch (err) {
     console.error("Login Error:", err);
@@ -110,8 +123,9 @@ app.post("/login", async (req, res) => {
 });
 
 
+
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

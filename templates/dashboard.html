@@ -144,9 +144,19 @@
         <!-- Main Content Area -->
         <main id="main-content" class="flex-1 ml-0 md:ml-47 p-8 h-screen overflow-auto">
             <!-- Default Content -->
-            <h1 class="text-3xl font-bold mb-4">Welcome Dr. John Doe</h1>
+            <h1 id="welcome-message" class="text-3xl font-bold mb-4">Welcome Dr. John Doe</h1>
             <p>You have cured 898 patients.</p>
         </main>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+    // Retrieve stored name from localStorage
+    const userEmail = localStorage.getItem("userEmail") || "Doctor";
+
+    // Update the welcome message in the dashboard
+    document.getElementById("welcome-message").innerText = `Welcome Dr. ${userEmail}`;
+});
+
+        </script>
     </div>
 
     <!-- Modal: Add Patient Form -->
