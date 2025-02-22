@@ -92,8 +92,21 @@
                 </button>
                 <div class="mb-8">
                     <p class="text-lg font-bold">Doctor Dashboard</p>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Dr. John Doe (ID: 12345)</p>
+                    <p id="welcome-message1" class="text-sm text-gray-600 dark:text-gray-400">Dr. John Doe (ID: 12345)</p>
                 </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                    // Retrieve stored name from localStorage
+                    const userEmail = localStorage.getItem("userEmail") || "Doctor";
+                    const params = new URLSearchParams(window.location.search);
+                    const userName = params.get("user") || "Doctor";
+        
+                    // Update the welcome message in the dashboard
+                    document.getElementById("welcome-message1").innerText = `Welcome Dr. ${userName}`;
+                    });
+        
+                </script>
+                
                 <nav>
                     <ul class="space-y-4">
                         <li class="flex items-center cursor-pointer text-gray-700 dark:text-gray-300 transition-transform duration-200 hover:scale-105 hover:font-bold"
@@ -149,12 +162,14 @@
         </main>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve stored name from localStorage
-    const userEmail = localStorage.getItem("userEmail") || "Doctor";
+            // Retrieve stored name from localStorage
+            const userEmail = localStorage.getItem("userEmail") || "Doctor";
+            const params = new URLSearchParams(window.location.search);
+            const userName = params.get("user") || "Doctor";
 
-    // Update the welcome message in the dashboard
-    document.getElementById("welcome-message").innerText = `Welcome Dr. ${userEmail}`;
-});
+            // Update the welcome message in the dashboard
+            document.getElementById("welcome-message").innerText = `Welcome Dr. ${userName}`;
+            });
 
         </script>
     </div>

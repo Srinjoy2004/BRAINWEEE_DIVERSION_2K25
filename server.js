@@ -44,10 +44,8 @@ app.post("/registration", async (req, res) => {
 
   // Validate the fields
   if (!name || !reg_no || !email || !password) {
-    console.log("Missing fields!"); // Log missing fields
-    return res
-      .status(400)
-      .json({ message: "Please provide all required fields." });
+    console.log("Missing fields!");
+    return res.redirect("/index.html?error=missing_fields");
   }
 
   try {
@@ -57,16 +55,15 @@ app.post("/registration", async (req, res) => {
     db.query(query, [name, email, reg_no, password], (err, result) => {
       if (err) {
         console.error("Database Error:", err);
-        return res.status(500).json({ message: "Database error", error: err });
+        return res.redirect("/index.html?error=database_error");
       }
-      // res.status(201).json({ message: "User registered successfully" });
-      res.redirect("/index.html");
+
+      console.log("User registered successfully");
+      res.redirect("/index.html?success=registered");
     });
   } catch (err) {
     console.error("Registration Error:", err);
-    res
-      .status(500)
-      .json({ message: "Error while registering user", error: err });
+    res.redirect("/index.html?error=registration_failed");
   }
 });
 
@@ -79,7 +76,7 @@ app.post("/login", async (req, res) => {
   // Validate input fields
   if (!email || !password) {
     console.log("Missing email or password!");
-    return res.status(400).json({ message: "Please provide both email and password." });
+    return res.redirect("/index.html?error=missing_credentials");
   }
 
   try {
@@ -89,22 +86,22 @@ app.post("/login", async (req, res) => {
     db.query(query, [email], (err, results) => {
       if (err) {
         console.error("Database Error:", err);
-        return res.status(500).json({ message: "Database error", error: err });
+        return res.redirect("/index.html?error=database_error");
       }
 
       if (results.length === 0) {
         console.log("Invalid login attempt: Email not found");
-        return res.status(401).json({ message: "Invalid email or password." });
+        return res.redirect("/index.html?error=invalid_login");
       }
 
       // Step 2: User exists, now check password
-      const user = results[0]; // Get user details from DB
-      const storedPassword = user.password; // Fetch stored password
-      const userName = user.name; // Fetch user name
+      const user = results[0];
+      const storedPassword = user.password;
+      const userName = user.name;
 
       if (storedPassword !== password) {
         console.log("Invalid login attempt: Incorrect password");
-        return res.status(401).json({ message: "Invalid email or password." });
+        return res.redirect("/index.html?error=invalid_login");
       }
 
       // Step 3: Successful login
@@ -113,19 +110,17 @@ app.post("/login", async (req, res) => {
       console.log("Email:", email);
       console.log("Login successful");
 
-      // Step 4: Send response with user name for frontend storage
-      res.redirect('/dashboard.html'); // Redirects immediately
+      // Store user info in a session or localStorage via frontend if needed
+      res.redirect(`/dashboard.html?user=${encodeURIComponent(userName)}`);
     });
   } catch (err) {
     console.error("Login Error:", err);
-    res.status(500).json({ message: "Error while logging in", error: err });
+    res.redirect("/index.html?error=login_failed");
   }
 });
 
-
-
 // Start server
-const PORT = process.env.PORT || 5010;
+const PORT = process.env.PORT || 5055;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
