@@ -275,23 +275,23 @@
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Sign In</h2>
                 <button id="close-signin-modal" class="text-gray-900 dark:text-white text-2xl">&times;</button>
             </div>
-            <form>
+            <form method="POST" action="/login">
                 <div class="mb-4">
                     <label for="signin-email"
                         class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Email</label>
-                    <input type="email" id="signin-email" placeholder="Email"
+                    <input type="email" id="email" name="email" placeholder="Email"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-6">
                     <label for="signin-password"
                         class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Password</label>
-                    <input type="password" id="signin-password" placeholder="Password"
+                    <input type="password" id="password" name="password" placeholder="Password"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="flex items-center justify-between">
                     <button
                         class="bg-[#019863] hover:bg-[#017f55] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="button">
+                        type="submit">
                         Sign In
                     </button>
                 </div>
@@ -698,6 +698,54 @@ document.getElementById("signup-form").addEventListener("submit", async function
         alert("Something went wrong. Please try again.");
     }
 });
+
+//login
+
+document.getElementById("login-form").addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevent page reload
+
+    // Collect form data
+    const formData = new FormData(this);
+
+    const data = {
+        email: formData.get("email"),
+        password: formData.get("password"),
+    };
+
+    console.log("Collected Data:", data); // ✅ Debugging: Log collected form data
+
+    // Ensure no fields are missing
+    if (!data.email || !data.password) {
+        alert("Please fill in both email and password!");
+        return;
+    }
+
+    try {
+        // Send data to backend
+        const response = await fetch("http://localhost:5000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        console.log("Server Response:", result); // ✅ Debugging: Log server response
+
+        if (response.ok) {
+            alert("Login successful!");
+            window.location.href = "dashboard.html"; // Redirect to dashboard
+        } else {
+            alert(`Error: ${result.message}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+});
+
 
 </script>
 </body>
