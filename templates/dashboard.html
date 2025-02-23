@@ -55,7 +55,7 @@
         </div>
         <!-- Desktop: Logout & Dark Mode Toggle -->
         <div class="hidden md:flex items-center gap-4">
-            <button class="bg-[#019863] hover:bg-[#017f55] text-white font-bold py-2 px-4 rounded">Logout</button>
+            <button class="bg-[#019863] hover:bg-[#017f55] text-white font-bold py-2 px-4 rounded" onclick="logout()">Logout</button>
             <button id="theme-toggle" class="focus:outline-none">
                 <span id="theme-text" class="text-gray-900 dark:text-white">Dark Mode</span>
             </button>
@@ -131,7 +131,8 @@
                             <span>Analyse Patient</span>
                         </li>
                         <li class="flex items-center cursor-pointer text-gray-700 dark:text-gray-300 transition-transform duration-200 hover:scale-105 hover:font-bold"
-                            onclick="showSection('ai-chat'); closeSidebarIfMobile();">
+                            onclick="window.location.href='https://huggingface.co/spaces/kathaaaasharma/Brain_Tumour_ChatBot';"
+                            closeSidebarIfMobile();">
                             <span class="w-8 flex justify-center">
                                 <i class="fas fa-robot"></i>
                             </span>
@@ -150,8 +151,19 @@
             <!-- Logout Button for Mobile (visible only on small screens) -->
             <div class="md:hidden">
                 <button
-                    class="w-full bg-[#019863] hover:bg-[#017f55] text-white font-bold py-2 px-4 rounded">Logout</button>
+                    class="w-full bg-[#019863] hover:bg-[#017f55] text-white font-bold py-2 px-4 rounded"
+                    onclick="logout()">
+                    Logout
+                </button>
             </div>
+            
+            <script>
+                function logout() {
+                    // Perform any logout logic here, like clearing session storage or tokens
+                    window.location.href = "./index.html"; // Redirect to index.html
+                }
+            </script>
+            
         </aside>
 
         <!-- Main Content Area -->
