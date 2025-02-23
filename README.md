@@ -50,32 +50,7 @@ This project focuses on detecting and segmenting brain tumors using deep learnin
 
 ---
 
-## 🛠️ Installation & Setup
 
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/your-username/The-Axios-BrainTumorSegmentation.git
-cd The-Axios-BrainTumorSegmentation
-```
-
-### 2️⃣ Create a Virtual Environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
-
-### 3️⃣ Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4️⃣ Run the Application
-```bash
-python app.py
-```
-The app will be available at `http://127.0.0.1:5000/`
-
----
 
 
 ### 📊 Performance Graphs
