@@ -26,6 +26,11 @@ This project focuses on detecting and segmenting brain tumors using deep learnin
 
 
 ---
+##  DashBoard Preview
+![DashBoard](./Dashboard.png)
+
+
+---
 
 ## 📂 Folder Structure
 ```
